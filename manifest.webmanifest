@@ -1,0 +1,9 @@
+{
+  "name": "USDT Casino Nederland",
+  "short_name": "USDT Casino",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#081c24",
+  "theme_color": "#081c24",
+  "icons": []
+}
