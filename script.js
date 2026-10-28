@@ -3,9 +3,11 @@
 
   const now = new Date();
   const iso = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('-');
-  const monthYear = new Intl.DateTimeFormat('nl-NL', { month: 'long', year: 'numeric' }).format(now);
-  const longDate = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
-  const shortDate = new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(now);
+  const isPolish = document.documentElement.lang.toLowerCase().startsWith('pl');
+  const locale = isPolish ? 'pl-PL' : 'nl-NL';
+  const monthYear = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(now);
+  const longDate = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+  const shortDate = new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(now);
 
   document.querySelectorAll('[data-date-mode]').forEach((node) => {
     const mode = node.dataset.dateMode;
@@ -16,8 +18,8 @@
     if (node.tagName === 'TIME') node.dateTime = iso;
   });
 
-  const pageTitle = `USDT Casino Nederland — Tether opties ${monthYear}`;
-  const pageDescription = `Vergelijk 7 USDT casino's voor Nederland op bonus, betaalmogelijkheden en licentievermelding. Bijgewerkt in ${monthYear}.`;
+  const pageTitle = isPolish ? `Kasyno USDT w Polsce — opcje Tether ${monthYear}` : `USDT Casino Nederland — Tether opties ${monthYear}`;
+  const pageDescription = isPolish ? `Porównaj sześć polskich kasyn USDT pod kątem bonusów, płatności, portfeli i wypłat. Aktualizacja: ${monthYear}.` : `Vergelijk 7 USDT casino's voor Nederland op bonus, betaalmogelijkheden en licentievermelding. Bijgewerkt in ${monthYear}.`;
   document.title = pageTitle;
 
   const updateMeta = (selector, value) => {
@@ -27,7 +29,7 @@
   updateMeta('meta[name="description"]', pageDescription);
   updateMeta('meta[name="last-modified"]', iso);
   updateMeta('meta[property="og:title"]', pageTitle);
-  updateMeta('meta[property="og:description"]', `Een nuchtere vergelijking van 7 casino's met USDT, betaalopties en bonuscontext. Bijgewerkt ${longDate}.`);
+  updateMeta('meta[property="og:description"]', isPolish ? `Porównanie sześciu kasyn USDT, płatności i bonusów. Aktualizacja: ${longDate}.` : `Een nuchtere vergelijking van 7 casino's met USDT, betaalopties en bonuscontext. Bijgewerkt ${longDate}.`);
   updateMeta('meta[property="article:modified_time"]', iso);
 
   const schemaNode = document.getElementById('site-schema');
@@ -36,7 +38,7 @@
       const schema = JSON.parse(schemaNode.textContent);
       const page = schema['@graph'].find((item) => item['@type'] === 'WebPage');
       if (page) {
-        page.name = `Online Casino met USDT in Nederland – Tether opties ${monthYear}`;
+        page.name = isPolish ? `Kasyno online z USDT w Polsce – opcje Tether ${monthYear}` : `Online Casino met USDT in Nederland – Tether opties ${monthYear}`;
         page.dateModified = iso;
       }
       schemaNode.textContent = JSON.stringify(schema);
@@ -62,6 +64,16 @@
     });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeMenu();
+    });
+  }
+
+  const languageSwitcher = document.querySelector('.language-switcher');
+  if (languageSwitcher) {
+    document.addEventListener('click', (event) => {
+      if (!languageSwitcher.contains(event.target)) languageSwitcher.removeAttribute('open');
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') languageSwitcher.removeAttribute('open');
     });
   }
 

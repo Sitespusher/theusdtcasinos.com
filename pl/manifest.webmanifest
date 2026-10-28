@@ -1,0 +1,10 @@
+{
+  "name": "Kasyno USDT w Polsce",
+  "short_name": "Kasyno USDT PL",
+  "lang": "pl-PL",
+  "start_url": "/pl/",
+  "display": "standalone",
+  "background_color": "#f4f7f2",
+  "theme_color": "#081c24",
+  "icons": [{"src":"/favicon.svg","sizes":"any","type":"image/svg+xml"}]
+}
