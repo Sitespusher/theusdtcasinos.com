@@ -252,7 +252,7 @@ tbody th, tbody td { font-weight: 400; }
 .support-copy span { color: #93aab1; font-size: .73rem; }
 .support-logos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
 .support-logos a { height: 78px; display: grid; place-items: center; padding: 13px; background: #102a34; border: 1px solid #36545d; box-shadow: inset 0 0 0 1px rgba(255,255,255,.025); }
-.support-logos img { width: 100%; height: 100%; object-fit: contain; filter: saturate(1.08) contrast(1.08); }
+.support-logos img { display: block; width: auto; max-width: 100%; height: auto; max-height: 52px; object-fit: contain; filter: saturate(1.08) contrast(1.08); }
 .support-logos--pl { grid-template-columns: repeat(4, 1fr); }
 .footer-bottom { display: flex; justify-content: space-between; gap: 22px; padding-block: 22px; color: #87a1a8; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; }
 

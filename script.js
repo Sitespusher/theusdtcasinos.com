@@ -19,7 +19,7 @@
   });
 
   const pageTitle = isPolish ? `Kasyno USDT w Polsce — opcje Tether ${monthYear}` : `USDT Casino Nederland — Tether opties ${monthYear}`;
-  const pageDescription = isPolish ? `Porównaj sześć polskich kasyn USDT pod kątem bonusów, płatności, portfeli i wypłat. Aktualizacja: ${monthYear}.` : `Vergelijk 7 USDT casino's voor Nederland op bonus, betaalmogelijkheden en licentievermelding. Bijgewerkt in ${monthYear}.`;
+  const pageDescription = isPolish ? `Porównaj sześć zagranicznych kasyn USDT dostępnych dla Polski pod kątem bonusów, płatności, portfeli i wypłat. Aktualizacja: ${monthYear}.` : `Vergelijk 7 USDT casino's voor Nederland op bonus, betaalmogelijkheden en licentievermelding. Bijgewerkt in ${monthYear}.`;
   document.title = pageTitle;
 
   const updateMeta = (selector, value) => {
@@ -31,16 +31,26 @@
   updateMeta('meta[property="og:title"]', pageTitle);
   updateMeta('meta[property="og:description"]', isPolish ? `Porównanie sześciu kasyn USDT, płatności i bonusów. Aktualizacja: ${longDate}.` : `Een nuchtere vergelijking van 7 casino's met USDT, betaalopties en bonuscontext. Bijgewerkt ${longDate}.`);
   updateMeta('meta[property="article:modified_time"]', iso);
+  updateMeta('meta[property="og:updated_time"]', iso);
 
   const schemaNode = document.getElementById('site-schema');
   if (schemaNode) {
     try {
       const schema = JSON.parse(schemaNode.textContent);
+      const updateSchemaDates = (value) => {
+        if (!value || typeof value !== 'object') return;
+        if (Array.isArray(value)) {
+          value.forEach(updateSchemaDates);
+          return;
+        }
+        Object.keys(value).forEach((key) => {
+          if (key === 'dateModified') value[key] = iso;
+          else updateSchemaDates(value[key]);
+        });
+      };
       const page = schema['@graph'].find((item) => item['@type'] === 'WebPage');
-      if (page) {
-        page.name = isPolish ? `Kasyno online z USDT w Polsce – opcje Tether ${monthYear}` : `Online Casino met USDT in Nederland – Tether opties ${monthYear}`;
-        page.dateModified = iso;
-      }
+      if (page) page.name = isPolish ? `Kasyno online z USDT w Polsce – opcje Tether ${monthYear}` : `Online Casino met USDT in Nederland – Tether opties ${monthYear}`;
+      updateSchemaDates(schema);
       schemaNode.textContent = JSON.stringify(schema);
     } catch (error) {
       console.warn('Datum in gestructureerde gegevens kon niet worden bijgewerkt.', error);
